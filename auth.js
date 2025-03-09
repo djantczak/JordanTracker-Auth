@@ -46,7 +46,7 @@ async function saveToGoogleSheet(athleteId, athleteName, accessToken, refreshTok
     try {
         // Initialize Google Auth (ensuring fresh auth context)
         const auth = new google.auth.GoogleAuth({
-            keyFile: 'google-credentials.json',
+            credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
             scopes: ['https://www.googleapis.com/auth/spreadsheets'],
         });
 
