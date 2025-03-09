@@ -1,1 +1,42 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strava OAuth Redirect</title>
+</head>
+<body>
+    <h1>Authentication Successful!</h1>
+    <p>The authorization process is complete. You can now close this window.</p>
+    
+    <script>
+        // Parse URL parameters to get the authorization code
+        const urlParams = new URLSearchParams(window.location.search);
+        const authCode = urlParams.get('code');
+        
+        if (authCode) {
+            console.log('Authorization code:', authCode); // You can send this to your server here
+            
+            // Example: Send code to your server for token exchange
+            fetch('https://your-server.com/exchange', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: authCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Tokens and Athlete Info:', data); // Log the response
+                // Optionally, you could display a success message or redirect the user
+                alert('Authentication successful! Your data is now stored.');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            console.error('Authorization code not found');
+        }
+    </script>
+</body>
+</html>
