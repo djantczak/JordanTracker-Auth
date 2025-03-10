@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 // Endpoint to handle Strava authentication callback
 app.get('/auth/strava/callback', async (req, res) => {
     const authorizationCode = req.query.code;
-
+    
     if (!authorizationCode) {
         return res.status(400).send('No authorization code received.');
     }
@@ -25,7 +25,7 @@ app.get('/auth/strava/callback', async (req, res) => {
             }
         });
 
-        const { access_token, refresh_token, athlete, expires_at } = response.data;
+        const { access_token, refresh_token, athlete, expires_at, scope } = response.data;
         const athleteId = athlete.id;
         const athleteName = `${athlete.firstname} ${athlete.lastname}`;
 
