@@ -32,7 +32,7 @@ app.get('/auth/strava/callback', async (req, res) => {
         console.log(`Received athlete: ${athleteName}`);
 
         // Save to Google Sheets
-        await saveToGoogleSheet(athleteId, athleteName, access_token, refresh_token, expires_at);
+        await saveToGoogleSheet(athleteId, athleteName, access_token, refresh_token, expires_at, scope);
 
         res.send('Authorization successful! Data saved.');
     } catch (error) {
@@ -42,7 +42,7 @@ app.get('/auth/strava/callback', async (req, res) => {
 });
 
 // Function to save tokens and user data to Google Sheets
-async function saveToGoogleSheet(athleteId, athleteName, accessToken, refreshToken, expiresAt) {
+async function saveToGoogleSheet(athleteId, athleteName, accessToken, refreshToken, expiresAt, scope) {
     try {
         // Initialize Google Auth (ensuring fresh auth context)
         const auth = new google.auth.GoogleAuth({
@@ -53,9 +53,9 @@ async function saveToGoogleSheet(athleteId, athleteName, accessToken, refreshTok
         const sheets = google.sheets({ version: 'v4', auth });
 
         const spreadsheetId = process.env.GOOGLE_SHEET_ID;
-        const range = 'Sheet1!A:E'; // Adjust based on your sheet
+        const range = 'Sheet1!A:F'; // Adjust based on your sheet
 
-        const values = [[athleteId, athleteName, accessToken, refreshToken, expiresAt]];
+        const values = [[athleteId, athleteName, accessToken, refreshToken, expiresAt, scope]];
 
         await sheets.spreadsheets.values.append({
             spreadsheetId,
